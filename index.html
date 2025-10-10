@@ -1,79 +1,14 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie显示页面</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-        h1 {
-            color: #333;
-        }
-        .cookie-container {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            white-space: pre-wrap;
-            word-break: break-all;
-        }
-        button {
-            padding: 8px 15px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .no-cookies {
-            color: #666;
-            font-style: italic;
-        }
-    </style>
+    <title>Cookie显示</title>
 </head>
 <body>
-    <h1>当前页面Cookie信息</h1>
-    
-    <div id="cookieDisplay" class="cookie-container">
-        <!-- Cookie内容将在这里显示 -->
-    </div>
-    
-    <button onclick="displayCookies()">刷新Cookie信息</button>
+    <h1>当前Cookie:</h1>
+    <pre id="cookieDisplay"></pre>
     
     <script>
-        // 获取并显示Cookie的函数
-        function displayCookies() {
-            const cookieContainer = document.getElementById('cookieDisplay');
-            const cookies = document.cookie;
-            
-            if (!cookies) {
-                cookieContainer.textContent = "当前没有Cookie信息";
-                cookieContainer.className = "cookie-container no-cookies";
-                return;
-            }
-            
-            // 解析Cookie字符串
-            let formattedCookies = "";
-            const cookieArray = cookies.split('; ');
-            
-            cookieArray.forEach(cookie => {
-                const [name, value] = cookie.split('=');
-                formattedCookies += `名称: ${name}\n值: ${value}\n\n`;
-            });
-            
-            cookieContainer.textContent = formattedCookies;
-            cookieContainer.className = "cookie-container";
-        }
-        
-        // 页面加载时显示Cookie
-        window.onload = displayCookies;
+        document.getElementById('cookieDisplay').textContent = document.cookie || "没有Cookie";
     </script>
 </body>
 </html>
